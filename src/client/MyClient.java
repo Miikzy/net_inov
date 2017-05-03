@@ -38,7 +38,7 @@ public class MyClient {
 
             //Step 3;
             while(true){
-                Request request;
+                Request request = new RequestCreator().create();
             }
 
         } catch (UnknownHostException e) {
