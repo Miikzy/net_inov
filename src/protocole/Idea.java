@@ -1,4 +1,5 @@
 package protocole;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +10,8 @@ import java.util.List;
 public class Idea implements Serializable {
 
     private static final long serialVersionUID = 1339L;
-
+    private static int idCounter;
+    private int id;
     private String initiator;
     private String email;
     private String name;
@@ -27,6 +29,7 @@ public class Idea implements Serializable {
      * @param technologies - a list of all the technologies that might be involved
      */
     public Idea(String initiator, String email, String name, String description, List<String> technologies) {
+        this.id = idCounter++;
         this.initiator = initiator;
         this.email = email;
         this.interested = new ArrayList<>();
@@ -44,15 +47,24 @@ public class Idea implements Serializable {
         interested.add(email);
     }
 
+    public List<String> getInterested() {
+        return interested;
+    }
+
+    public int getId() {
+        return id;
+    }
+
     @Override
     public String toString() {
-        return "Idea{" +
-                "initiator='" + initiator + '\'' +
+        return "Idee{" +
+                "id=" + id +
+                ", initiator='" + initiator + '\'' +
                 ", email='" + email + '\'' +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", technologies=" + technologies +
                 ", interested=" + interested +
-                '}';
+                "} + \n";
     }
 }
