@@ -38,7 +38,7 @@ public class MyClient {
 
             //Step 3;
             while(true){
-
+                Request request;
             }
 
         } catch (UnknownHostException e) {
