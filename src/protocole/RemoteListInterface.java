@@ -1,8 +1,5 @@
 package protocole;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * A list of ideas stored on the server.
@@ -14,7 +11,6 @@ public interface RemoteListInterface{
      *
      * @return an answer containing all of the ideas
      */
-
     Answer list();
 
     /**
