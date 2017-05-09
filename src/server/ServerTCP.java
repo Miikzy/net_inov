@@ -22,27 +22,38 @@ public class ServerTCP {
 
 	public void start() {
 
-		try {
+		ServerSocket sSocket;
+		Socket cSocket;
+		while (true) {
+			try {
 
-			ServerSocket sSocket = new ServerSocket(this.port);
-			System.out.println("attente de connection");
-			Socket cSocket = sSocket.accept();
-			System.out.println("connecté");
-			ObjectOutputStream output = new ObjectOutputStream(cSocket.getOutputStream());
-			ObjectInputStream input = new ObjectInputStream(cSocket.getInputStream());
+				sSocket = new ServerSocket(this.port);
+				System.out.println("attente de connection");
+				cSocket = sSocket.accept();
+				System.out.println("connecté");
+				ObjectOutputStream output = new ObjectOutputStream(cSocket.getOutputStream());
+				ObjectInputStream input = new ObjectInputStream(cSocket.getInputStream());
 
-			while (true) {
+				while (true) {
+					try {
+						Request request = this.read(input);
+						output.writeObject(this.send(request));
+						System.out.println(this.remoteList.getIdeas().size());
+					} catch (Exception e) {
+						System.out.println("Mauvaise requete");
+						break;
+					}
 
-				Request request = this.read(input);
-				output.writeObject(this.send(request));
-				System.out.println(this.remoteList.getIdeas().size());
+				}
 
+				cSocket.close();
+				sSocket.close();
+
+			} catch (IOException e) {
+				System.out.println("fin/perte de connection");
+				;
 			}
-
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
-
 	}
 
 	private Answer send(Request request) {
@@ -60,20 +71,17 @@ public class ServerTCP {
 
 	}
 
-	private Request read(ObjectInputStream reader) {
+	private Request read(ObjectInputStream reader) throws IOException, ClassNotFoundException {
 
-		Request received = null;
-
-		try {
-			Object object = reader.readObject();
-			received = (Request) object;
-		} catch (IOException | ClassNotFoundException | ClassCastException e) {
-			e.printStackTrace();
-		}
+		Object object = reader.readObject();
+		Request received = (Request) object;
 
 		return received;
 
 	}
 
+	public static void main(String... args) {
+		new ServerTCP(8080).start();
+	}
 
 }

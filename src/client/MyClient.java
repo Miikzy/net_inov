@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 /**
  * 4 stages of a client's life :
@@ -18,53 +17,51 @@ import java.net.UnknownHostException;
  */
 public class MyClient {
 
-    private int port;
-    private String host;
+	private int port;
+	private String host;
 
-    public MyClient(int port, String host) {
-        this.port = port;
-        this.host = host;
-    }
+	public MyClient(int port, String host) {
+		this.port = port;
+		this.host = host;
+	}
 
-    public void start() {
-        try {
-            //Step 1;
-            Socket socket = new Socket(host, port);
+	public void start() {
+		try {
+			//Step 1;
+			Socket socket = new Socket(host, port);
 
-            //Step 2;
-            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+			//Step 2;
+			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+			ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
 
-            //Step 3;
-            while (true) {
-                Request request = new RequestCreator().create();
-                if (request == null) {
-                    System.out.println("There is no request.");
-                    break;
-                }
-                out.writeObject(request);
-                Answer answer = (Answer) in.readObject();
-                if (!(answer.getStatus().equals(Answer.NORMAL_STATUS))) {
-                    System.out.println("An error occured in the answer.");
-                    return;
-                }
-                if (answer.getAnswer() == null) {
-                    System.out.println("Request successful");
-                } else {
-                    System.out.println("Answer: \n" + answer.getAnswer());
-                }
-            }
-            socket.close();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
+			//Step 3;
+			while (true) {
+				Request request = new RequestCreator().create();
+				if (request == null) {
+					System.out.println("There is no request.");
+					break;
+				}
+				out.writeObject(request);
+				Answer answer = (Answer) in.readObject();
+				if (!(answer.getStatus().equals(Answer.NORMAL_STATUS))) {
+					System.out.println("An error occured in the answer.");
+					return;
+				}
+				if (answer.getAnswer() == null) {
+					System.out.println("Request successful");
+				} else {
+					System.out.println("Answer: \n" + answer.getAnswer());
+				}
+			}
 
-    public static void main(String[] args) {
-        new MyClient(8080, "localhost").start();
-    }
+			socket.close();
+		} catch (ClassNotFoundException | IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public static void main(String[] args) {
+		new MyClient(8080, "localhost").start();
+	}
 }
