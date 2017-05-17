@@ -62,6 +62,6 @@ public class MyClient {
 	}
 
 	public static void main(String[] args) {
-		new MyClient(8080, "localhost").start();
+		new MyClient(8080, "10.212.97.234").start();
 	}
 }

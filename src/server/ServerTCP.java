@@ -1,23 +1,13 @@
 package server;
 
-import protocole.Answer;
-import protocole.Request;
-
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.net.ServerSocket;
-import java.net.Socket;
-
-public class ServerTCP {
+/*public class ServerTCP {
 
 	private int port;
 	private RemoteList remoteList;
 
 	public ServerTCP(int port) {
 		this.port = port;
-		this.remoteList = new RemoteList();
+	this.remoteList = new RemoteList(port);
 	}
 
 	public void start() {
@@ -38,9 +28,8 @@ public class ServerTCP {
 					try {
 						Request request = this.read(input);
 						output.writeObject(this.send(request));
-						System.out.println(this.remoteList.getIdeas().size());
 					} catch (Exception e) {
-						System.out.println("Mauvaise requete");
+						output.writeObject(new Answer(Answer.BAD_STATUS, null));
 						break;
 					}
 
@@ -50,8 +39,7 @@ public class ServerTCP {
 				sSocket.close();
 
 			} catch (IOException e) {
-				System.out.println("fin/perte de connection");
-				;
+				System.out.println("erreur ");
 			}
 		}
 	}
@@ -84,4 +72,4 @@ public class ServerTCP {
 		new ServerTCP(8080).start();
 	}
 
-}
+}*/
