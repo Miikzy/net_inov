@@ -1,6 +1,5 @@
 package protocole;
 
-
 /**
  * A list of ideas stored on the server.
  */
@@ -11,6 +10,7 @@ public interface RemoteListInterface{
      *
      * @return an answer containing all of the ideas
      */
+
     Answer list();
 
     /**
