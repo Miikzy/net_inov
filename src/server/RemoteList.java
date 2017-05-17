@@ -5,8 +5,9 @@ import protocole.Idea;
 import protocole.Participation;
 import protocole.RemoteListInterface;
 
-import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,10 +55,12 @@ public class RemoteList extends UnicastRemoteObject implements RemoteListInterfa
 
 	public static void main(String[] args) {
 		try {
+
+			Registry r = LocateRegistry.createRegistry(8080);
 			System.out.println("Création de l'objet serveur...");
 			RemoteList server = new RemoteList(8080);
 			System.out.println("Référencement dans le RMIRegistry...");
-			Naming.rebind("Server", server);
+			r.rebind("Server", server);
 			System.out.println("Attente d'invocations - CTRL-C pour stopper");
 		} catch (Exception e) {
 			e.printStackTrace();
